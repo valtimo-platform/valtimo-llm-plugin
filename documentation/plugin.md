@@ -1,71 +1,56 @@
-# Plugin Documentation
+# Valtimo LLM plugin
 
-<!-- Use this page to document your plugin. Below is a suggested structure. -->
+For chatting with an AI agents using Mistral.
 
-## Overview
+## Capabilities
 
-This is a sample plugin demonstrating an API call action. It fetches data from a time API endpoint.
+This plugin has three actions:
 
-## Dependencies
+1. Give Summary: Summarizes the given text.
+2. Chat: Chat with the AI agent.
+3. Chat with Memory: Chat with the AI agent while retaining context from previous questions.
 
-### Backend
+---
 
-```kotlin
-dependencies {
-    implementation("com.ritense.valtimoplugins:sample-plugin:0.0.1")
-}
-```
+# Plugin Setup Guide
 
-### Frontend
+Follow these steps to set up the plugin properly:
 
-```json
-{
-  "dependencies": {
-    "@valtimo-plugins/sample-plugin": "0.0.1"
-  }
-}
-```
+---
 
-In your `app.module.ts`:
+### Step 1: Create a Mistral Account
 
-```typescript
-import {
-    SamplePluginModule, samplePluginSpecification,
-} from '@valtimo-plugins/sample-plugin';
+Go to [https://mistral.ai/](https://mistral.ai/) and create a free account.
 
-@NgModule({
-    imports: [
-        SamplePluginModule,
-    ],
-    providers: [
-        {
-            provide: PLUGIN_TOKEN,
-            useValue: [
-                samplePluginSpecification,
-            ]
-        }
-    ]
-})
-```
+### Step 2: Generate an API Token
 
-## Configuration
+1. Go to your **console**.
+2. Click on the **"API Keys"** tab.
+3. Click on the **"Create new key"** button.
+4. Give your token a **name**.
+5. Optionally set an **expiration date**.
+6. Click **"Create new key"** to create your token.
 
-List the plugin configuration properties and how to set them.
+> **Important:** Copy the token and store it safely. You won't be able to see it again.
 
-| Property | Type   | Required | Description                          |
-|----------|--------|----------|--------------------------------------|
-| apiUrl   | string | Yes      | The URL of the time API to call      |
+---
 
-## Actions
+### Step 3: Configure in Valtimo
 
-### Time API test action
+1. Go to **Valtimo** and open the **Plugins** tab.
+2. Search for the **Valtimo LLM Plugin** with **(autodeployed)** behind it and click on it.
+3. Paste the token you copied earlier into the **Token** field.
+4. Click **"Save"** to store your configuration.
+5. Repeat this for the other plugin **Valtimo LLM Plugin** so all processes are Executable.
 
-Sends a GET request to the configured API URL and returns the timezone response.
+---
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-|           |      |          |             |
+### Step 4: Start Using the Plugin
 
-## Usage
-
-Explain how to use the plugin in a process, with examples if applicable.
+1. Go to the **Autodeployed Case** under the tab **cases**.
+2. Start a new **case**.
+3. Select the **process** you want to start.
+4. Fill in the **question** you want to ask.
+5. Click **"Submit"** to send your question to the AI agent.
+6. **Enjoy your conversation** with the AI agent!
+---
