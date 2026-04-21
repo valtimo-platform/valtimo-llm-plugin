@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-/*
- * Public API Surface of Mistral
- */
+package com.ritense.valtimoplugins.`valtimo-llm`
 
-export * from './lib/models';
-export * from './lib/valtimo-llm-plugin-module';
-export * from './lib/valtimo-llm-plugin.specification';
-export * from './lib/components/valtimo-llm-configuration/valtimo-llm-configuration.component';
-export * from './lib/components/chat/chat-configuration.component';
-export * from './lib/components/chat-memorize/chat-memorize-configuration.component';
-export * from './lib/components/give-summary/give-summary-configuration.component';
+import com.ritense.valtimo.contract.config.LiquibaseRunnerAutoConfiguration
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
+
+@SpringBootApplication(
+    scanBasePackageClasses = [LiquibaseRunnerAutoConfiguration::class]
+)
+class TestApplication {
+
+    fun main(args: Array<String>) {
+        runApplication<TestApplication>(*args)
+    }
+}
