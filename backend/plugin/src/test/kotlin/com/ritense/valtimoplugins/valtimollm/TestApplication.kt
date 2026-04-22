@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.`valtimo-llm`
+package com.ritense.valtimoplugins.valtimollm
 
 import com.ritense.valtimo.contract.config.LiquibaseRunnerAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(
-    scanBasePackageClasses = [LiquibaseRunnerAutoConfiguration::class]
+    scanBasePackageClasses = [LiquibaseRunnerAutoConfiguration::class],
 )
 class TestApplication {
-
     fun main(args: Array<String>) {
         runApplication<TestApplication>(*args)
     }

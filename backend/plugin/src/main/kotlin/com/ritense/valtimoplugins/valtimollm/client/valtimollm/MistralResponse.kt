@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
 data class MistralResponse(
-    @JsonProperty("choices") val choices: List<Choice>
+    @JsonProperty("choices") val choices: List<Choice>,
 )
 
 data class Choice(
@@ -13,9 +13,9 @@ data class Choice(
 )
 
 data class Message(
-    @JsonProperty("content") val content: String
+    @JsonProperty("content") val content: String,
 )
 
 data class StringWrapper(
-    val value: String
+    val value: String,
 ) : Serializable

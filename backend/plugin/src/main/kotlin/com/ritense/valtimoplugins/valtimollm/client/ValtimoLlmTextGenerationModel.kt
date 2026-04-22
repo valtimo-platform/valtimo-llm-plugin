@@ -35,49 +35,55 @@ class ValtimoLlmTextGenerationModel(
     var baseUri: URI? = null,
     var token: String? = null,
 ) {
-
     fun mistralChat(question: String): String {
-        val result = post(
-            "v1/chat/completions",
-            MistralRequest(
-                model = "open-mistral-nemo-2407",
-                messages = listOf(
-                    MistralMessage(
-                        role = "user",
-                        content = question
-                    )
-                )
+        val result =
+            post(
+                "v1/chat/completions",
+                MistralRequest(
+                    model = "open-mistral-nemo-2407",
+                    messages =
+                        listOf(
+                            MistralMessage(
+                                role = "user",
+                                content = question,
+                            ),
+                        ),
+                ),
             )
-        )
         return result
     }
 
-    private fun post(path: String, mistralRequest: MistralRequest): String {
-        val response = restClientBuilder
-            .clone()
-            .build()
-            .post()
-            .uri {
-                it.scheme(baseUri!!.scheme)
-                    .host(baseUri!!.host)
-                    .path(baseUri!!.path)
-                    .path(path)
-                    .port(baseUri!!.port)
-                    .build()
-            }
-            .headers {
-                it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(token!!)
-            }
-            .accept(MediaType.APPLICATION_JSON)
-            .body(ObjectMapper().writeValueAsString(mistralRequest))
-            .retrieve()
-            .body<MistralResponse>()!!
+    private fun post(
+        path: String,
+        mistralRequest: MistralRequest,
+    ): String {
+        val response =
+            restClientBuilder
+                .clone()
+                .build()
+                .post()
+                .uri {
+                    it
+                        .scheme(baseUri!!.scheme)
+                        .host(baseUri!!.host)
+                        .path(baseUri!!.path)
+                        .path(path)
+                        .port(baseUri!!.port)
+                        .build()
+                }.headers {
+                    it.contentType = MediaType.APPLICATION_JSON
+                    it.setBearerAuth(token!!)
+                }.accept(MediaType.APPLICATION_JSON)
+                .body(ObjectMapper().writeValueAsString(mistralRequest))
+                .retrieve()
+                .body<MistralResponse>()!!
 
         if (response.choices.isEmpty()) {
             throw AiAgentException("Empty response")
         }
-        return response.choices.first().message.content
+        return response.choices
+            .first()
+            .message.content
     }
 
     companion object {

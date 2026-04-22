@@ -28,23 +28,25 @@ import org.springframework.web.client.RestClient
 
 @AutoConfiguration
 class ValtimoLlmAutoConfiguration {
-
     @Bean
     @ConditionalOnMissingBean(ValtimoLlmSummaryModel::class)
-    fun MistralSummaryModel(
-        restClientBuilder: RestClient.Builder
-    ) = ValtimoLlmSummaryModel(
-        restClientBuilder, null, null
-    )
+    @Suppress("ktlint:standard:function-naming")
+    fun MistralSummaryModel(restClientBuilder: RestClient.Builder) =
+        ValtimoLlmSummaryModel(
+            restClientBuilder,
+            null,
+            null,
+        )
 
     @Bean
     @ConditionalOnMissingBean(ValtimoLlmTextGenerationModel::class)
-    fun MistralTextGenerationModel(
-        restClientBuilder: RestClient.Builder
-    ) = ValtimoLlmTextGenerationModel(
-        restClientBuilder, null, null
-    )
-
+    @Suppress("ktlint:standard:function-naming")
+    fun MistralTextGenerationModel(restClientBuilder: RestClient.Builder) =
+        ValtimoLlmTextGenerationModel(
+            restClientBuilder,
+            null,
+            null,
+        )
 
     @Bean
     @ConditionalOnMissingBean(ValtimoLlmPluginFactory::class)
@@ -59,5 +61,4 @@ class ValtimoLlmAutoConfiguration {
         valtimoLlmTextGenerationModel,
         documentService,
     )
-
 }

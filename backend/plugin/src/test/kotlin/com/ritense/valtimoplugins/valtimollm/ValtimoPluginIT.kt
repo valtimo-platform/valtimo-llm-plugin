@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.`valtimo-llm`
+package com.ritense.valtimoplugins.valtimollm
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
@@ -31,10 +31,10 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.assertj.core.api.Assertions.assertThat
-import org.operaton.bpm.engine.RepositoryService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.operaton.bpm.engine.RepositoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.transaction.annotation.Transactional
@@ -42,7 +42,6 @@ import kotlin.test.fail
 
 @Transactional
 class ValtimoPluginIT : BaseIntegrationTest() {
-
     @Autowired
     lateinit var processDocumentService: ProcessDocumentService
 
@@ -73,10 +72,11 @@ class ValtimoPluginIT : BaseIntegrationTest() {
             "The tower is 324 metres (1,063 ft) tall, about the same height as an 81-storey building, and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. During its construction, the Eiffel Tower surpassed the Washington Monument to become the tallest man-made structure in the world, a title it held for 41 years until the Chrysler Building in New York City was finished in 1930. It was the first structure to reach a height of 300 metres. Due to the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the Chrysler Building by 5.2 metres (17 ft). Excluding transmitters, the Eiffel Tower is the second tallest free-standing structure in France after the Millau Viaduct."
 
         createProcessLink(
-            "give-summary", """
+            "give-summary",
+            """
             {
                 "longText": "$longText"
-            }"""
+            }""",
         )
 
         // when
@@ -89,31 +89,36 @@ class ValtimoPluginIT : BaseIntegrationTest() {
 
     fun startMockServer() {
         executedRequests = mutableListOf()
-        val dispatcher: Dispatcher = object : Dispatcher() {
-            @Throws(InterruptedException::class)
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                executedRequests.add(request)
-                val response = when (request.method + " " + request.path?.substringBefore('?')) {
-                    "POST /facebook/bart-large-cnn" -> mockResponseFromFile("/data/summary-response.json")
-                    else -> MockResponse().setResponseCode(404)
+        val dispatcher: Dispatcher =
+            object : Dispatcher() {
+                @Throws(InterruptedException::class)
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    executedRequests.add(request)
+                    val response =
+                        when (request.method + " " + request.path?.substringBefore('?')) {
+                            "POST /facebook/bart-large-cnn" -> mockResponseFromFile("/data/summary-response.json")
+                            else -> MockResponse().setResponseCode(404)
+                        }
+                    return response
                 }
-                return response
             }
-        }
         server = MockWebServer()
         server.dispatcher = dispatcher
         server.start()
     }
 
-    fun findRequest(method: HttpMethod, path: String): RecordedRequest? {
-        return executedRequests
+    fun findRequest(
+        method: HttpMethod,
+        path: String,
+    ): RecordedRequest? =
+        executedRequests
             .filter { method.matches(it.method!!) }
             .firstOrNull { it.path?.substringBefore('?').equals(path) }
-    }
 
-    fun getRequest(method: HttpMethod, path: String): RecordedRequest {
-        return findRequest(method, path) ?: fail("Request with method $method and path $path was not sent")
-    }
+    fun getRequest(
+        method: HttpMethod,
+        path: String,
+    ): RecordedRequest = findRequest(method, path) ?: fail("Request with method $method and path $path was not sent")
 
     private fun createAiAgentPluginConfiguration(): PluginConfiguration {
         val configurationProperties = """
@@ -125,15 +130,20 @@ class ValtimoPluginIT : BaseIntegrationTest() {
         return pluginService.createPluginConfiguration(
             "mistral plugin configuration",
             MapperSingleton.get().readTree(configurationProperties) as ObjectNode,
-            "mistral"
+            "mistral",
         )
     }
 
-    private fun createProcessLink(actionDefinitionKey: String, actionProperties: String) {
-        val processDefinition = repositoryService.createProcessDefinitionQuery()
-            .processDefinitionKey(PROCESS_DEFINITION_KEY)
-            .latestVersion()
-            .singleResult()
+    private fun createProcessLink(
+        actionDefinitionKey: String,
+        actionProperties: String,
+    ) {
+        val processDefinition =
+            repositoryService
+                .createProcessDefinitionQuery()
+                .processDefinitionKey(PROCESS_DEFINITION_KEY)
+                .latestVersion()
+                .singleResult()
 
         pluginService.createProcessLink(
             PluginProcessLinkCreateDto(
@@ -143,7 +153,7 @@ class ValtimoPluginIT : BaseIntegrationTest() {
                 actionDefinitionKey,
                 MapperSingleton.get().readTree(actionProperties) as ObjectNode,
                 SERVICE_TASK_START,
-            )
+            ),
         )
     }
 
@@ -153,13 +163,16 @@ class ValtimoPluginIT : BaseIntegrationTest() {
                 "lastname": "Doe"
             }
         """
-        val request = NewDocumentAndStartProcessRequest(
-            PROCESS_DEFINITION_KEY,
-            NewDocumentRequest(
-                DOCUMENT_DEFINITION_KEY,
-                MapperSingleton.get().readTree(documentContent)
+        val request =
+            NewDocumentAndStartProcessRequest(
+                PROCESS_DEFINITION_KEY,
+                NewDocumentRequest(
+                    DOCUMENT_DEFINITION_KEY,
+                    null,
+                    null,
+                    MapperSingleton.get().readTree(documentContent),
+                ),
             )
-        )
         request.withProcessVars(processVars)
         val result = runWithoutAuthorization { processDocumentService.newDocumentAndStartProcess(request) }
         if (result.errors().isNotEmpty()) {
@@ -167,16 +180,14 @@ class ValtimoPluginIT : BaseIntegrationTest() {
         }
     }
 
-    private fun mockResponseFromFile(fileName: String): MockResponse {
-        return MockResponse()
+    private fun mockResponseFromFile(fileName: String): MockResponse =
+        MockResponse()
             .addHeader("Content-Type", "application/json; charset=utf-8")
             .setResponseCode(200)
             .setBody(readFileAsString(fileName))
-    }
 
     companion object {
         private const val PROCESS_DEFINITION_KEY = "ServiceTaskProcess"
         private const val DOCUMENT_DEFINITION_KEY = "profile"
     }
-
 }

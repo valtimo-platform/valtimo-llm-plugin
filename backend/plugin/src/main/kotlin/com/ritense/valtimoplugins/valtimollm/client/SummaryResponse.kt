@@ -24,7 +24,7 @@ data class SummaryResponse(
     val created: Long? = null,
     val model: String?,
     val choices: List<Choice>?,
-    val usage: Usage? = null
+    val usage: Usage? = null,
 ) {
     val summaryText: String
         get() = choices?.firstOrNull()?.message?.content ?: ""
@@ -33,16 +33,16 @@ data class SummaryResponse(
 data class Choice(
     val index: Int?,
     val message: Message?,
-    @JsonProperty("finish_reason") val finishReason: String?
+    @JsonProperty("finish_reason") val finishReason: String?,
 )
 
 data class Message(
     val role: String?,
-    val content: String?
+    val content: String?,
 )
 
 data class Usage(
     @JsonProperty("prompt_tokens") val promptTokens: Int?,
     @JsonProperty("completion_tokens") val completionTokens: Int?,
-    @JsonProperty("total_tokens") val totalTokens: Int?
+    @JsonProperty("total_tokens") val totalTokens: Int?,
 )

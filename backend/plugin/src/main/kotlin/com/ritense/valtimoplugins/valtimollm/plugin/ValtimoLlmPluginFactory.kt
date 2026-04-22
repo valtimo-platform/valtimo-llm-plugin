@@ -32,10 +32,10 @@ class ValtimoLlmPluginFactory(
     val valtimoLlmTextGenerationModel: ValtimoLlmTextGenerationModel,
     val documentService: JsonSchemaDocumentService,
 ) : PluginFactory<ValtimoLlmPlugin>(pluginService) {
-
-    override fun create() = ValtimoLlmPlugin(
-        valtimoLlmSummaryModel,
-        valtimoLlmTextGenerationModel,
-        documentService,
-    )
+    override fun create() =
+        ValtimoLlmPlugin(
+            valtimoLlmSummaryModel,
+            valtimoLlmTextGenerationModel,
+            documentService,
+        )
 }

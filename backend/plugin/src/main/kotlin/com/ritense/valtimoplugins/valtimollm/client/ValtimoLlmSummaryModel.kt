@@ -34,44 +34,47 @@ class ValtimoLlmSummaryModel(
     var baseUri: URI? = null,
     var token: String? = null,
 ) {
-
     fun giveSummary(longText: String): String {
-        val request = MistralRequest(
-            model = "open-mistral-nemo-2407",
-            messages = listOf(
-                MistralMessage(role = "user", content = longText),
-                MISTRAL_SYSTEM_MESSAGE
-            ),
-            max_tokens = 500,
-            stream = false
-        )
+        val request =
+            MistralRequest(
+                model = "open-mistral-nemo-2407",
+                messages =
+                    listOf(
+                        MistralMessage(role = "user", content = longText),
+                        MISTRAL_SYSTEM_MESSAGE,
+                    ),
+                max_tokens = 500,
+                stream = false,
+            )
 
         val result = post("v1/chat/completions", request)
         return result.summaryText
     }
 
-    private fun post(path: String, body: Any): SummaryResponse {
-        val response = restClientBuilder
-            .clone()
-            .build()
-            .post()
-            .uri {
-                it.scheme(baseUri!!.scheme)
-                    .host(baseUri!!.host)
-                    .path(baseUri!!.path)
-                    .path(path)
-                    .port(baseUri!!.port)
-                    .build()
-            }
-            .headers {
-                it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(token!!)
-            }
-            .accept(MediaType.APPLICATION_JSON)
-            .body(body)
-            .retrieve()
-            .body<SummaryResponse>()!!
-
+    private fun post(
+        path: String,
+        body: Any,
+    ): SummaryResponse {
+        val response =
+            restClientBuilder
+                .clone()
+                .build()
+                .post()
+                .uri {
+                    it
+                        .scheme(baseUri!!.scheme)
+                        .host(baseUri!!.host)
+                        .path(baseUri!!.path)
+                        .path(path)
+                        .port(baseUri!!.port)
+                        .build()
+                }.headers {
+                    it.contentType = MediaType.APPLICATION_JSON
+                    it.setBearerAuth(token!!)
+                }.accept(MediaType.APPLICATION_JSON)
+                .body(body)
+                .retrieve()
+                .body<SummaryResponse>()!!
 
         return response
     }

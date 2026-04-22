@@ -17,5 +17,5 @@
 package com.ritense.valtimoplugins.valtimollm.client
 
 class AiAgentException(
-    message: String?
+    message: String?,
 ) : RuntimeException(message)
