@@ -75,7 +75,8 @@ class ValtimoPluginIT : BaseIntegrationTest() {
             "give-summary",
             """
             {
-                "longText": "$longText"
+                "longText": "$longText",
+                "resultPV": "summaryResult"
             }""",
         )
 
@@ -83,7 +84,7 @@ class ValtimoPluginIT : BaseIntegrationTest() {
         createDocumentAndStartProcess()
 
         // then
-        val requestBody = getRequest(HttpMethod.POST, "/facebook/bart-large-cnn").body.readUtf8()
+        val requestBody = getRequest(HttpMethod.POST, "/v1/chat/completions").body.readUtf8()
         assertThat(requestBody).contains("The tower is 324 metres")
     }
 
@@ -96,7 +97,7 @@ class ValtimoPluginIT : BaseIntegrationTest() {
                     executedRequests.add(request)
                     val response =
                         when (request.method + " " + request.path?.substringBefore('?')) {
-                            "POST /facebook/bart-large-cnn" -> mockResponseFromFile("/data/summary-response.json")
+                            "POST /v1/chat/completions" -> mockResponseFromFile("/data/summary-response.json")
                             else -> MockResponse().setResponseCode(404)
                         }
                     return response
@@ -130,7 +131,7 @@ class ValtimoPluginIT : BaseIntegrationTest() {
         return pluginService.createPluginConfiguration(
             "mistral plugin configuration",
             MapperSingleton.get().readTree(configurationProperties) as ObjectNode,
-            "mistral",
+            "valtimo-llm",
         )
     }
 
@@ -168,8 +169,8 @@ class ValtimoPluginIT : BaseIntegrationTest() {
                 PROCESS_DEFINITION_KEY,
                 NewDocumentRequest(
                     DOCUMENT_DEFINITION_KEY,
-                    null,
-                    null,
+                    DOCUMENT_DEFINITION_KEY,
+                    "1.0.0",
                     MapperSingleton.get().readTree(documentContent),
                 ),
             )

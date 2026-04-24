@@ -1,11 +1,13 @@
 val kotlinLoggingVersion: String by project
 val nettyResolverDnsNativeMacOsVersion: String by project
+val valtimoOcrPluginVersion: String by project
 
 dependencies {
     implementation(platform("com.ritense.valtimo:valtimo-dependency-versions"))
 
     implementation("com.ritense.valtimo:valtimo-dependencies")
     implementation("com.ritense.valtimo:local-mail")
+    implementation("com.ritense.valtimoplugins:valtimo-ocr:$valtimoOcrPluginVersion")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.postgresql:postgresql")
@@ -26,7 +28,7 @@ apply(from = "../../gradle/environment.gradle.kts")
 val configureEnvironment = extra["configureEnvironment"] as (task: ProcessForkOptions) -> Unit
 
 dockerCompose {
-    setProjectName("valtimo-docker-compose")
+    setProjectName("valtimo-llm-plugin")
     stopContainers = false
     removeContainers = false
     removeVolumes = false

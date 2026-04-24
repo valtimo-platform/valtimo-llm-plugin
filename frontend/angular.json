@@ -187,6 +187,30 @@
                     }
                 }
             }
+        },
+        "@valtimo-plugins/valtimo-ocr": {
+            "projectType": "library",
+            "root": "projects/valtimo-ocr",
+            "sourceRoot": "projects/valtimo-ocr/src",
+            "prefix": "lib",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:ng-packagr",
+                    "options": {
+                        "tsConfig": "projects/valtimo-ocr/tsconfig.lib.json",
+                        "project": "projects/valtimo-ocr/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/valtimo-ocr/tsconfig.lib.prod.json"
+                        },
+                        "development": {
+                            "tsConfig": "projects/valtimo-ocr/tsconfig.lib.json"
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                }
+            }
         }
     },
     "cli": {

@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:54341/mistral-test
+    url: jdbc:postgresql://localhost:54362/valtimo-llm-test
     username: test-user
     password: password
     hikari:
@@ -31,10 +31,13 @@ spring:
     hibernate:
       ddl-auto: none
 
-camunda:
+operaton:
   bpm:
+    database:
+      type: postgres
     generic-properties:
       properties:
+        deploy-changed-only: true
         enforceHistoryTimeToLive: false
 
 spring-actuator:

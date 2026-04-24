@@ -22,6 +22,7 @@ import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
+  standalone: false,
     selector: 'valtimo-llm-configuration',
     templateUrl: './valtimo-llm-configuration.component.html',
     styleUrls: ['./valtimo-llm-configuration.component.scss'],

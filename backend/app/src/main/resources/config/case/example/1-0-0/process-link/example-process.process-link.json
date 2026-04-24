@@ -6,14 +6,15 @@
         "formDefinitionName": "start-form-example"
     },
     {
-        "activityId": "valtimo-llm-action",
+        "activityId": "valtimo-llm-give-summary",
         "activityType": "bpmn:ServiceTask:start",
         "processLinkType": "plugin",
         "pluginDefinitionKey": "valtimo-llm",
-        "pluginActionDefinitionKey": "valtimo-llm-action",
-        "pluginConfigurationId": "4ac9a49f-4aeb-4f91-86d9-853fd95a1b33",
+        "pluginActionDefinitionKey": "give-summary",
+        "pluginConfigurationId": "3397d7be-2b42-4ae7-b5b5-ea5ee83a0574",
         "actionProperties": {
-            "message": "Hello from the valtimo-llm plugin!"
+            "longText": "Very long text to summarize",
+            "resultPV": "result"
         }
     }
 ]
