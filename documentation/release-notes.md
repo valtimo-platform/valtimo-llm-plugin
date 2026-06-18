@@ -2,17 +2,17 @@
 
 Overzicht van wijzigingen per versie van de Valtimo LLM-plugin.
 
-## 3.0.0
-Geschikt gemaakt voor Valtimo 13.24.0 en ondergebracht in een eigen repository, met voorbeeldapplicatie en aparte documentatie.
+## 5.4.4
+Ondergebracht in een eigen repository met voorbeeldapplicatie, aparte documentatie en een PR-checks workflow. Broncode gesynchroniseerd met de monorepo en ktlint-issues opgelost.
 
-## 2.1.0
-Plugin zichtbaar gemaakt in de Valtimo Configurator.
+## 5.4.3
+Versie-ophoging van Valtimo LLM.
 
-## 2.0.0
-Geschikt gemaakt voor Valtimo 13.
+## 5.4.2
+Verbeteringen en opschoning: NotifyNL-tekst verwijderd uit plugin-acties, logica verplaatst van client- naar domeinpakket, tokenauthenticatie opnieuw geïmplementeerd, vertalingen en camelCase-consistentie verbeterd, ongebruikte afhankelijkheden en configuratievariabelen opgeruimd.
 
-## 1.1.0
-Verbeteringen en updates aan de pluginconfiguratie.
+## 5.4.1
+Tussentijdse versie-ophoging.
 
-## 1.0.0
-Eerste release onder de naam Valtimo LLM: tekst samenvatten en chatten via Mistral.
+## 5.4.0
+Eerste release onder de naam Valtimo LLM (voorheen Mistral): tekst samenvatten en chatten via Mistral.
