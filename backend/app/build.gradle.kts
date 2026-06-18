@@ -2,11 +2,13 @@ val kotlinLoggingVersion: String by project
 val nettyResolverDnsNativeMacOsVersion: String by project
 val valtimoOcrPluginVersion: String by project
 
-dependencies {
-    implementation(platform("com.ritense.valtimo:valtimo-dependency-versions"))
+val valtimoVersion: String by project
 
-    implementation("com.ritense.valtimo:valtimo-dependencies")
-    implementation("com.ritense.valtimo:local-mail")
+dependencies {
+    implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
+
+    implementation("com.ritense.valtimo:valtimo-dependencies:$valtimoVersion")
+    implementation("com.ritense.valtimo:local-mail:$valtimoVersion")
     implementation("com.ritense.valtimoplugins:valtimo-ocr:$valtimoOcrPluginVersion")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
