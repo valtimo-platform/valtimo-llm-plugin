@@ -2,6 +2,10 @@
 
 Overzicht van wijzigingen per versie van de Valtimo LLM-plugin.
 
+## 6.0.2
+
+Valtimo bijgewerkt naar versie 13.41.0.
+
 ## 6.0.1
 Versienummer gelijkgetrokken met de al gepubliceerde 6.0.0. Deze release bevat geen functionele wijzigingen.
 
