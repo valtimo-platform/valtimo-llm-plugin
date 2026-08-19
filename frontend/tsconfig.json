@@ -31,9 +31,6 @@
             ],
             "@valtimo-plugins/valtimo-llm": [
                 "projects/plugin/src/public_api.ts"
-            ],
-            "@valtimo-plugins/valtimo-ocr": [
-                "projects/valtimo-ocr/src/public-api.ts"
             ]
         }
     },
