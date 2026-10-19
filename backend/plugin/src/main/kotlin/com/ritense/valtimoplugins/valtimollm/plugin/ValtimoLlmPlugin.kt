@@ -26,6 +26,7 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.valtimollm.client.ModelEndpoint
 import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmSummaryModel
 import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmTextGenerationModel
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.StringWrapper
@@ -53,6 +54,9 @@ open class ValtimoLlmPlugin(
     @PluginProperty(key = "token", secret = true)
     lateinit var token: String
 
+    @PluginProperty(key = "model", secret = false, required = false)
+    var model: String? = null
+
     @PluginAction(
         key = "give-summary",
         title = "Give summary",
@@ -64,10 +68,9 @@ open class ValtimoLlmPlugin(
         @PluginActionProperty longText: String,
         @PluginActionProperty resultPV: String,
     ) {
-        valtimoLlmSummaryModel.baseUri = url
-        valtimoLlmSummaryModel.token = token
         val result =
             valtimoLlmSummaryModel.giveSummary(
+                endpoint = endpoint(),
                 longText = longText,
             )
 
@@ -87,15 +90,13 @@ open class ValtimoLlmPlugin(
         @PluginActionProperty chatAnswerPV: String,
         @PluginActionProperty question: String,
     ) {
-        valtimoLlmTextGenerationModel.baseUri = url
-        valtimoLlmTextGenerationModel.token = token
-
         // Get the Case
         val id = JsonSchemaDocumentId.existingId(UUID.fromString(execution.businessKey))
         val jsonSchemaDocument = documentService.getDocumentBy(id)
         val interpolatedQuestion = generate(question, jsonSchemaDocument)
         val chatResult =
             valtimoLlmTextGenerationModel.mistralChat(
+                endpoint = endpoint(),
                 question = interpolatedQuestion,
             )
         execution.setVariable(interpolatedQuestionPV, StringWrapper(interpolatedQuestion))
@@ -117,9 +118,6 @@ open class ValtimoLlmPlugin(
         @PluginActionProperty previousQuestion: String?,
         @PluginActionProperty maxQandASaved: String?,
     ) {
-        valtimoLlmTextGenerationModel.baseUri = url
-        valtimoLlmTextGenerationModel.token = token
-
         // Get chat history
         val chatHistoryWrapper = execution.getVariable("chatHistory") as? StringWrapper
         val chatHistory = chatHistoryWrapper?.value ?: ""
@@ -133,7 +131,7 @@ open class ValtimoLlmPlugin(
         val interpolatedQuestion = generate(fullPrompt, jsonSchemaDocument)
 
         // Ask the AI model
-        val chatResult = valtimoLlmTextGenerationModel.mistralChat(interpolatedQuestion)
+        val chatResult = valtimoLlmTextGenerationModel.mistralChat(endpoint(), interpolatedQuestion)
         if (chatResult.isEmpty()) throw RuntimeException("Empty chat result")
 
         // Update chat history
@@ -164,6 +162,9 @@ open class ValtimoLlmPlugin(
         println("Stored chat result: '$chatResult' in variable $chatAnswerPV")
         println("Stored interpolated question: '$interpolatedQuestion' in variable $interpolatedQuestionPV")
     }
+
+    // The models are shared beans, so each action passes its own configuration's endpoint instead of setting it on them.
+    fun endpoint() = ModelEndpoint(url, token, model)
 
     fun generate(
         templateAsString: String,
